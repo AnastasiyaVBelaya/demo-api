@@ -31,7 +31,7 @@ public class Activities extends Base {
 
     public static Response getPostResponse() {
         String url = ACTIVITIES_URL;
-        ActivityBody activityBody = new ActivityBody(1000000,"hello","2025-02-19T16:17:38.563Z",true);
+        ActivityBody activityBody = new ActivityBody(1000000, "hello", "2025-02-19T16:17:38.563Z", true);
         Response response = given()
                 .headers(getHeaders())
                 .body(activityBody)
@@ -41,10 +41,31 @@ public class Activities extends Base {
     }
 
     public static Response getPutResponse() {
+        ActivityBody activityBody = new ActivityBody(0, "java", "2025-02-19T16:29:22.73Z", false);
+        return getPutResponse(activityBody);
+    }
+
+    public static Response getPutResponse(ActivityBody activityBody) {
+        return getPutResponse(getHeaders(), activityBody);
+    }
+
+    public static Response getPutResponse(String url, ActivityBody activityBody) {
+        return getPutResponse(url, getHeaders(), activityBody);
+    }
+
+    public static Response getPutResponse(Map<String, Object> headers, ActivityBody activityBody) {
         String url = ACTIVITIES_URL + "/0";
-        ActivityBody activityBody = new ActivityBody(0,"java","2025-02-19T16:29:22.730Z",false);
         Response response = given()
-                .headers(getHeaders())
+                .headers(headers)
+                .body(activityBody)
+                .when()
+                .put(url);
+        return response;
+    }
+
+    public static Response getPutResponse(String url, Map<String, Object> headers, ActivityBody activityBody) {
+        Response response = given()
+                .headers(headers)
                 .body(activityBody)
                 .when()
                 .put(url);
